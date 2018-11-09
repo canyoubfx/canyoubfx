@@ -6,4 +6,4 @@ Observations:
 * Add more unit tests
 * Revist proptypes on components
 * Sometimes killing and opening socket doesn work?
-* Refactor EVERYTHING to make it nicer withmore time.
+* Refactor EVERYTHING to make it nicer with more time.
