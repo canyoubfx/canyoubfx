@@ -14,7 +14,8 @@ import {
     CHANNEL_TICKER, CHANNEL_ORDER,
     CHANNEL_TRADE, TRADE_INITIAL, TRADE_UPDATE,
     CHANGE_PRECISION, CHANNEL_ORDER_UNSUBSCRIBE,
-    ORDER_BOOK_PRECISION, SOCKET_KILL, SOCKET_OPEN
+    ORDER_BOOK_PRECISION, SOCKET_KILL, SOCKET_OPEN,
+    CHANNEL_TICKER_UNSUBSCRIBE, CHANNEL_TRADE_UNSUBSCRIBE
 } from '../actions';
 
 let orderThrottle = 0;
@@ -32,6 +33,9 @@ export function* socketSaga() {
 
 function* killSocket() {
     yield ws.close();
+    yield put({ type: CHANNEL_TICKER_UNSUBSCRIBE });
+    yield put({ type: CHANNEL_ORDER_UNSUBSCRIBE });
+    yield put({ type: CHANNEL_TRADE_UNSUBSCRIBE });
     yield put({ type: DISCONNECTION });
 }
 
@@ -71,6 +75,7 @@ function* createEventChannel() {
             return emit({ type: CONNECTION, payload: { connected: true } });
         };
         ws.onmessage = (message) => {
+            
             return emit({ type: MESSAGE, payload: JSON.parse(message.data) });
         };
         ws.onerror = (err) => {

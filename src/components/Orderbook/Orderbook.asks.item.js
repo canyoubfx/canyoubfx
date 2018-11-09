@@ -1,5 +1,6 @@
-import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Radium from 'radium';
+import React, { PureComponent } from 'react';
 
 class OrderBookAsksItem extends PureComponent {
     render() {
@@ -29,6 +30,14 @@ var styles = {
         flex: 1,
         textAlign: 'left'
     }
+}
+
+OrderBookAsksItem.propTypes = {
+    orders: PropTypes.number,
+    amount: PropTypes.number,
+    total: PropTypes.number,
+    min: PropTypes.number,
+    max: PropTypes.number
 }
 
 export default Radium(OrderBookAsksItem);
