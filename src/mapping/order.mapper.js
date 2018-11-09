@@ -7,9 +7,10 @@ export const initialOrderBookMapper = (data) => {
     var bidsTotal = 0;
     var asksTotal = 0;
     var bidsSorted = sortBy(first(chunks), (c) => c[0]);
-    bidsSorted.forEach((b) => {
-        bidsTotal += b[1];
-        bids[b[0]] = mapRow(b, bidsTotal);
+    var totals = bidsSorted.map((b) =>  bidsTotal += b[1]).reverse();
+    bidsSorted.forEach((b, i) => {
+        totals.push(bidsTotal += b[1]);
+        bids[b[0]] = mapRow(b, totals[i]);
     });
     var asksSorted = sortBy(last(chunks), (c) => c[0]);
     asksSorted.forEach((a) => {
@@ -18,6 +19,7 @@ export const initialOrderBookMapper = (data) => {
     });
     return { bids, asks };
 }
+
 
 const mapRow = (args, total) => {
     return {
@@ -53,12 +55,15 @@ export const bookUpdateMapper = (orderBook, payload) => {
 const mapTotals = (orderBook) => {
     var bidsTotal = 0;
     var asksTotal = 0;
-    Object.keys(orderBook.bids).forEach((bid) => {
+    var totals = Object.keys(orderBook.bids).sort().map((b) =>  {
+         return orderBook.bids[b].count;
+    }).reverse();
+    Object.keys(orderBook.bids).sort().reverse().forEach((bid, i) => {
         var line = orderBook.bids[bid];
-        bidsTotal += line.count;
+        bidsTotal += totals[i];
         line.total = bidsTotal;
     })
-    Object.keys(orderBook.asks).forEach((ask) => {
+    Object.keys(orderBook.asks).sort().forEach((ask) => {
         var line = orderBook.asks[ask];
         asksTotal += line.count;
         line.total = asksTotal;

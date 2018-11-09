@@ -12,16 +12,18 @@ class OrderBook extends Component {
         prec: 0
     }
 
-    renderAsks(asks) {
+   
+
+    renderBids(asks) {
         var mapped = [];
         Object.keys(asks).forEach(function (key) {
             mapped.push(asks[key]);
         });
-        var sorted = sortBy(mapped, (m) => m.total);
+        var sorted = sortBy(mapped, (m) => m.price).reverse();
         return sorted.map((i, k) =>
             (
                 <div key={k}>
-                    <OrderBookAskItem
+                    <OrderBookBidItem
                         price={i.price}
                         amount={i.amount}
                         count={i.count}
@@ -34,16 +36,16 @@ class OrderBook extends Component {
         )
     }
 
-    renderBids(asks) {
+    renderAsks(asks) {
         var mapped = [];
         Object.keys(asks).forEach(function (key) {
             mapped.push(asks[key]);
         });
-        var sorted = sortBy(mapped, (m) => m.total);
-        return sorted.reverse().map((i, k) =>
+        var sorted = sortBy(mapped, (m) => m.price);
+        return sorted.map((i, k) =>
             (
                 <div key={k}>
-                    <OrderBookBidItem
+                    <OrderBookAskItem
                         price={i.price}
                         amount={i.amount}
                         count={i.count}
