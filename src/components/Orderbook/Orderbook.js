@@ -40,7 +40,7 @@ class OrderBook extends Component {
             mapped.push(asks[key]);
         });
         var sorted = sortBy(mapped, (m) => m.total);
-        return sorted.map((i, k) =>
+        return sorted.reverse().map((i, k) =>
             (
                 <div key={k}>
                     <OrderBookBidItem
